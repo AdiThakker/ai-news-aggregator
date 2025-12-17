@@ -1,0 +1,7 @@
+# Example settings.yaml
+recipients:
+  - "example@email.com"
+digest_frequency: "daily"
+rss_feeds:
+  - "https://example.com/rss"
+  - "https://youtube.com/feeds/videos.xml?channel_id=CHANNEL_ID"

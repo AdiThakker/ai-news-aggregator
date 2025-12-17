@@ -1,0 +1,31 @@
+[project]
+
+name = "ai-news-aggregator"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+	"feedparser",
+	"sqlalchemy",
+	"openai",
+	"yagmail",
+	"apscheduler",
+	"pydantic",
+	"python-dotenv",
+	"click",
+	"pytest",
+	"pytest-cov",
+	"black",
+	"flake8",
+	"isort"
+]
+
+[project.optional-dependencies]
+dev = [
+	"black",
+	"flake8",
+	"isort",
+	"pytest",
+	"pytest-cov"
+]
