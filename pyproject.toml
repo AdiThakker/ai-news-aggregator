@@ -16,16 +16,12 @@ dependencies = [
 	"click",
 	"pytest",
 	"pytest-cov",
-	"black",
-	"flake8",
-	"isort"
+	"ruff"
 ]
 
 [project.optional-dependencies]
 dev = [
-	"black",
-	"flake8",
-	"isort",
+	"ruff",
 	"pytest",
 	"pytest-cov"
 ]
