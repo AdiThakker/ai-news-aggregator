@@ -18,6 +18,8 @@ dependencies = [
 	"pytest-cov",
 	"ruff",
 	"youtube-transcript-api>=1.2.3",
+	"psycopg2-binary",
+	"alembic",
 ]
 
 [project.optional-dependencies]
