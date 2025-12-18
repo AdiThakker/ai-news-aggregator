@@ -4,6 +4,8 @@ from dateutil import parser as date_parser
 from app.scraper.youtube_transcript_scraper import YouTubeTranscriptScraper
 from app.scraper.openai_blog_scraper import OpenAIBlogScraper
 from app.scraper.scraper_config import SCRAPER_CONFIG
+from app.db.db import SessionLocal
+from app.db.crud import insert_openai_blog_post, insert_youtube_transcript
 
 
 class ScraperOrchestrator:
@@ -17,6 +19,7 @@ class ScraperOrchestrator:
 
     def run(self):
         all_docs = []
+        db = SessionLocal()
         for scraper in self.scrapers:
             docs = scraper.scrape()
             for doc in docs:
@@ -29,6 +32,31 @@ class ScraperOrchestrator:
                         pass
                 if pub_dt and pub_dt > self.since:
                     all_docs.append(doc)
+                    # Insert into DB based on type
+                    if "video_id" in doc and doc.get("video_id"):
+                        transcript_text = doc.get("text") or doc.get("transcript")
+                        if transcript_text:
+                            insert_youtube_transcript(
+                                db,
+                                title=doc.get("title"),
+                                link=doc.get("link"),
+                                published=pub_dt,
+                                text=transcript_text,
+                                video_id=doc.get("video_id"),
+                            )
+                        else:
+                            print(
+                                f"Skipping YouTube video with missing transcript: {doc.get('title')} ({doc.get('link')})"
+                            )
+                    else:
+                        insert_openai_blog_post(
+                            db,
+                            title=doc.get("title"),
+                            link=doc.get("link"),
+                            published=pub_dt,
+                            text=doc.get("text") or doc.get("summary"),
+                        )
+        db.close()
         return all_docs
 
 
